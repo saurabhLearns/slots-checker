@@ -148,7 +148,6 @@ const makeRequest = (options) => new Promise((resolve, reject) => {
   });
 });
 
-server.listen(() =>  {
-  APICron();
-  isMailSentCron();
-});
+server.listen(5000);
+APICron();
+isMailSentCron();

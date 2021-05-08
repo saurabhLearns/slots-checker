@@ -15,6 +15,7 @@ A script that will check for the availability of vaccination slots in your local
  - ``` node index.js ```
 
 ### Environment variables to use?
+- PORT: Port you want to run your server on
 - EMAIL_ID: Email ID from which you want to send the email.
 - EMAIL_PASSWORD: Sender email password. (Gmail doesn't work, unfortunately)
 - SMTP_SERVER: smtp server host of the sender email.
