@@ -148,6 +148,6 @@ const makeRequest = (options) => new Promise((resolve, reject) => {
   });
 });
 
-server.listen(5000);
+server.listen(process.env.PORT || 5000);
 APICron();
 isMailSentCron();
