@@ -44,7 +44,7 @@ const isMailSentCron = () => new CronJob('0 */5 * * *', () => {
 /**
  * Cron to call the CoWIN API and fetch the API data
  */
-const APICron = () => new CronJob('* * * * *', () => {
+const APICron = () => new CronJob('*/5 * * * *', () => {
   const options = {
     url: `https://cdn-api.co-vin.in/api/v2/appointment/sessions/public/calendarByPin`,
     method: 'GET',
