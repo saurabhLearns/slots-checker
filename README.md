@@ -28,3 +28,5 @@ A script that will check for the availability of vaccination slots in your local
 - Runs basically on cronjobs. Calls the Co-WIN API in particular intervals, checks if it has any slots available or not. 
 - If yes, hits up the email to receivers! 
 - Starts checking for the slots again after few hours. 
+
+##### (Note: This script does not work on non-indian IPs, as Co-WIN app blocks the requests from non-indian IPs. So I could not find any FREE servers to deploy and run the script. And I cannot pay for the same, I'm poor. Suggestions are welcomed)
