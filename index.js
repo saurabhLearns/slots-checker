@@ -19,7 +19,7 @@ const NodeMailer = require('nodemailer');
 const request = require('request');
 
 // Helper flag to pause sending mail for few hours, after mail is sent
-var mailSentTime = new Date().valueOf() - 3*3600*100;
+var mailSentTime = new Date().valueOf() - 3*3600*1000;
 
 /**
  * Initialize http server
@@ -68,7 +68,8 @@ const checkAvailability = (data) => {
       slots: center.sessions.map(session => {
         return ({
           date: session.date,
-          available_bookings: session.available_capacity
+          available_bookings: session.available_capacity,
+          vaccine: session.vaccine,
         });
       })
     });
@@ -92,12 +93,12 @@ const sendMail = (centers) => {
   });
   
   // convert data in html table format for clean visualization, I'm a backend dev. I dont know HTML/CSS more that this :P
-  let htmlStyle = '<style>.tg  {border-collapse:collapse;border-spacing:0;}.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}</style>';
-  let htmlString = `<table class='tg'><tr><th>Centers</th><th>Slot Date </th><th> Remaining </th></tr>`;
+  let htmlStyle = '<style>.tg  {border-collapse:collapse;border-spacing:0;text-align:center;}.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;text-align:center;}.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;text-align:center;}.tg .tg-0pky{border-color:inherit;vertical-align:top;text-align:center;}</style>';
+  let htmlString = `<table class='tg'><tr><th>Centers</th><th>Slot Date </th><th> Remaining </th><th> Vaccine </th></tr>`;
   centers.forEach(center => {
     let toConcat = `<tr><th rowspan='${center.slots.length}'> ${center.center_name}</td>`;
     center.slots.forEach(slot => {
-      toConcat = toConcat + `<td> ${slot.date} </td> <td> ${slot.available_bookings} </td></tr>`;
+      toConcat = toConcat + `<td> ${slot.date} </td> <td> ${slot.available_bookings} </td> <td> ${slot.vaccine} </td> </tr>`;
       toConcat = toConcat + '<tr>';
     });
     toConcat = toConcat + "</tr>";
@@ -109,7 +110,7 @@ const sendMail = (centers) => {
     to: process.env.RECEIVER_EMAILS,
     from: process.env.EMAIL_ID,
     subject: 'You got vaccine to take!',
-    html: htmlString,
+    html: htmlStyle,
   };
   transporter.sendMail(mailOptions, (error, info) => {
     if (error) {
